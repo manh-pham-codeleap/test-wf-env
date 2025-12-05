@@ -11,6 +11,7 @@ on:
 # This env is evaluated at workflow level (no environment context yet)
 env:
   WORKFLOW_TEST_NAME: ${{ vars.TEST_NAME }}
+  INIT_NAME: "dummy"
 
 jobs:
   show-test-name:
@@ -31,3 +32,8 @@ jobs:
           echo "Workflow-level WORKFLOW_TEST_NAME = $WORKFLOW_TEST_NAME"
           echo "Job-level     JOB_TEST_NAME       = $JOB_TEST_NAME"
           echo "Direct        TEST_NAME           = $TEST_NAME"
+          echo "Init          INIT_NAME           = $INIT_NAME"
+          echo "actual value">> $GITHUB_ENV
+      - name: Show update value
+        run: |
+          echo "New value: $INIT_NAME"
