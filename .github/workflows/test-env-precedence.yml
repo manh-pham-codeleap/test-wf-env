@@ -1,0 +1,33 @@
+name: Test Env Var Precedence
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment-name:
+        description: 'Environment to use (e.g. QA)'
+        required: true
+        type: string
+
+# This env is evaluated at workflow level (no environment context yet)
+env:
+  WORKFLOW_TEST_NAME: ${{ vars.TEST_NAME }}
+
+jobs:
+  show-test-name:
+    runs-on: ubuntu-22.04
+
+    # Attach an environment (e.g. QA) so its vars become available
+    environment:
+      name: ${{ inputs.environment-name }}
+
+    # This env is evaluated with environment context
+    env:
+      JOB_TEST_NAME: ${{ vars.TEST_NAME }}
+      TEST_NAME: ${{ vars.TEST_NAME }}
+
+    steps:
+      - name: Show TEST_NAME values
+        run: |
+          echo "Workflow-level WORKFLOW_TEST_NAME = $WORKFLOW_TEST_NAME"
+          echo "Job-level     JOB_TEST_NAME       = $JOB_TEST_NAME"
+          echo "Direct        TEST_NAME           = $TEST_NAME"
