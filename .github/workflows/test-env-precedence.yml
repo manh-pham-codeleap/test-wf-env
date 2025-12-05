@@ -5,7 +5,7 @@ on:
     inputs:
       environment-name:
         description: 'Environment to use (e.g. QA)'
-        required: true
+        required: false
         type: string
 
 # This env is evaluated at workflow level (no environment context yet)
